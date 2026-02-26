@@ -3,6 +3,7 @@ import { createServer as createViteServer } from "vite";
 import Database from "better-sqlite3";
 import dotenv from "dotenv";
 import { MealPlan, MealPlanFormData, ShoppingListCategory } from './types';
+import serverless from 'serverless-http';
 
 dotenv.config();
 
@@ -117,4 +118,5 @@ async function startServer() {
   });
 }
 
+export const handler = serverless(app)
 startServer();
