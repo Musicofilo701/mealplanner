@@ -1,6 +1,7 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
-import { Pool } from "pg";
+import pkg from 'pg';
+const { Pool } = pkg; // Modo corretto per importare il Pool da 'pg'
 import dotenv from "dotenv";
 import path from "path";
 import { MealPlan, MealPlanFormData, ShoppingListCategory } from './types';
@@ -11,11 +12,11 @@ dotenv.config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false // Necessario per le connessioni sicure su Render/Supabase
+    rejectUnauthorized: false 
   }
 });
 
-// Inizializzazione DB (Postgres usa SERIAL invece di AUTOINCREMENT)
+// Inizializzazione DB
 const initDb = async () => {
   try {
     await pool.query(`
@@ -41,7 +42,7 @@ initDb();
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json());
 
@@ -56,7 +57,6 @@ async function startServer() {
       return res.status(400).json({ error: "startDate and endDate are required" });
     }
     try {
-      // Postgres usa $1, $2 invece di ?
       const result = await pool.query(
         "SELECT * FROM meal_plans WHERE date >= $1 AND date <= $2 ORDER BY date ASC, meal_type ASC",
         [startDate, endDate]
@@ -73,7 +73,6 @@ async function startServer() {
       return res.status(400).json({ error: "Invalid meal plan data" });
     }
 
-    // Nota: Postgres non ha le transazioni identiche a SQLite3, usiamo una logica sequenziale sicura
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
@@ -130,7 +129,7 @@ async function startServer() {
     }
   });
 
-  // Vite middleware for development / Static files for production
+  // Vite middleware / Static files
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -140,7 +139,6 @@ async function startServer() {
   } else {
     const distPath = path.resolve("dist");
     app.use(express.static(distPath));
-    
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });
