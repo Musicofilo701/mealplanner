@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build && npx esbuild server.ts --bundle --platform=node --outfile=dist/server.js --external:fsevents",
+    "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "start": "node dist/server.js"
+    "start": "npx tsx server.js"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
