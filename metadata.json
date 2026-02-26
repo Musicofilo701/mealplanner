@@ -1,0 +1,5 @@
+{
+  "name": "Meal Planner",
+  "description": "Plan your meals with Gemini AI, store recipes, and track your daily nutrition.",
+  "requestFramePermissions": []
+}
