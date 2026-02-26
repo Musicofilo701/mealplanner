@@ -21,10 +21,10 @@ export default function App() {
   const [formData, setFormData] = useState<MealPlanFormData>({
     startDate: format(new Date(), 'yyyy-MM-dd'),
     endDate: format(addDays(new Date(), 6), 'yyyy-MM-dd'),
-    mealsPerDay: 3,
-    caloriesLevel: 'medium',
+    mealsPerDay: 2,
+    caloriesLevel: 'low',
     vegetarian: false,
-    redMeat: true,
+    redMeat: false,
     budgetFriendly: true,
     notes: '',
   });
