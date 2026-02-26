@@ -10,6 +10,7 @@ export const generateMealPlan = async (data: MealPlanFormData) => {
   else mealsDescription = '3 meals per day (Breakfast, Lunch, and Dinner)';
 
   const prompt = `Generate a meal plan from ${data.startDate} to ${data.endDate}.
+  It's ok to cook a meal and eat it in two different occasions if the time of the meal plan is longer than 3 days, but don't make it happen too much. Please provide all the information and the text in Italian.
   Requirements:
   - Meals per day: ${mealsDescription}
   - Calories level: ${data.caloriesLevel}
